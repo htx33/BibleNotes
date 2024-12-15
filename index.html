@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BibleNotes</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="display: none;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Bible Verse Journal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#verses">Verses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#sermon-notes">Sermon Notes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#quiet-time">Quiet Time</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#quiz">Quiz</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <span class="navbar-text me-3" id="user-name"></span>
+                    <button class="btn btn-outline-light" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container" style="display: none;">
+        <h1 class="text-center my-4">Bible Verse Journal</h1>
+        
+        <!-- Navigation -->
+        <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="verses-tab" data-bs-toggle="tab" href="#verses">Verses</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="bible-tab" data-bs-toggle="tab" href="#bible">Read Bible</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="study-tab" data-bs-toggle="tab" href="#study">Study</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="notes-tab" data-bs-toggle="tab" href="#notes">Notes</a>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="myTabContent">
+            <!-- Verses Section -->
+            <div class="tab-pane fade show active" id="verses">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Add New Verse</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label for="verse-reference" class="form-label">Verse Reference</label>
+                                    <input type="text" class="form-control" id="verse-reference" placeholder="e.g., John 3:16">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="verse-text" class="form-label">Verse Text</label>
+                                    <textarea class="form-control" id="verse-text" rows="3"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex gap-2 mb-2">
+                                        <button class="btn btn-outline-primary" id="add-season-btn">
+                                            <i class="bi bi-calendar-event"></i> Add Season
+                                        </button>
+                                        <button class="btn btn-outline-primary" id="add-mood-btn">
+                                            <i class="bi bi-emoji-smile"></i> Add Mood
+                                        </button>
+                                        <button class="btn btn-outline-primary" id="add-topic-btn">
+                                            <i class="bi bi-tag"></i> Add Topic
+                                        </button>
+                                    </div>
+                                    <div id="season-input" class="input-group mb-2 d-none">
+                                        <span class="input-group-text">Season</span>
+                                        <input type="text" class="form-control" placeholder="Describe your current season...">
+                                        <button class="btn btn-outline-secondary remove-input" type="button">×</button>
+                                    </div>
+                                    <div id="mood-input" class="input-group mb-2 d-none">
+                                        <span class="input-group-text">Mood</span>
+                                        <select class="form-select">
+                                            <option value="">Select a mood...</option>
+                                            <option value="happy">Happy</option>
+                                            <option value="sad">Sad</option>
+                                            <option value="depressed">Depressed</option>
+                                            <option value="joyful">Joyful</option>
+                                            <option value="anxious">Anxious</option>
+                                            <option value="impatient">Impatient</option>
+                                            <option value="patient">Patient</option>
+                                            <option value="selfish">Selfish</option>
+                                            <option value="selfless">Selfless</option>
+                                            <option value="impulsive">Impulsive</option>
+                                        </select>
+                                        <button class="btn btn-outline-secondary remove-input" type="button">×</button>
+                                    </div>
+                                    <div id="topic-input" class="input-group mb-2 d-none">
+                                        <span class="input-group-text">Topic</span>
+                                        <input type="text" class="form-control" placeholder="Enter a topic...">
+                                        <button class="btn btn-outline-secondary remove-input" type="button">×</button>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" id="add-verse">Add Verse</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3>Saved Verses</h3>
+                                <div id="verses-list" class="list-group">
+                                    <!-- Verses will be dynamically added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bible Reading Section -->
+            <div class="tab-pane fade" id="bible">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h3>Bible Navigation</h3>
+                                <div class="mb-3">
+                                    <label class="form-label">Translation</label>
+                                    <select class="form-control" id="bible-translation">
+                                        <option value="web">World English Bible (WEB)</option>
+                                        <option value="kjv">King James Version (KJV)</option>
+                                        <option value="clementine">Clementine Latin Vulgate</option>
+                                        <option value="almeida">João Ferreira de Almeida</option>
+                                        <option value="rccv">Romanian Corrected Cornilescu Version</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Book</label>
+                                    <select class="form-control" id="bible-book">
+                                        <!-- Books will be populated via JavaScript -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Chapter</label>
+                                    <select class="form-control" id="bible-chapter">
+                                        <!-- Chapters will be populated via JavaScript -->
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary w-100" id="read-chapter">Read Chapter</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h3>Search Bible</h3>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" id="verse-search" 
+                                           placeholder="Enter verse reference (e.g., John 3:16)">
+                                    <small class="form-text text-muted">
+                                        Format: Book Chapter:Verse (e.g., "John 3:16" or "Psalm 23")
+                                    </small>
+                                </div>
+                                <button class="btn btn-primary w-100" id="search-bible">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="bible-content">
+                                    <h3 id="passage-title">Select a passage to read</h3>
+                                    <div id="passage-text" class="mt-3"></div>
+                                </div>
+                                <div id="search-results" class="mt-3 d-none">
+                                    <h3>Search Results</h3>
+                                    <div id="results-content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Section -->
+            <div class="tab-pane fade" id="study">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Study & Memorize</h3>
+                        <div class="mb-4">
+                            <h4>Quiz Mode</h4>
+                            <button class="btn btn-primary" id="start-quiz">Start Quiz</button>
+                            <div id="quiz-area" class="mt-3">
+                                <!-- Quiz content will be dynamically added here -->
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <h4>Verse of the Day</h4>
+                            <div id="verse-of-day">
+                                <!-- Daily verse will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="tab-pane fade" id="notes">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h3>Quiet Time Journal</h3>
+                                <form id="quiet-time-form">
+                                    <div class="mb-3">
+                                        <input type="date" class="form-control" id="journal-date">
+                                    </div>
+                                    <div class="mb-3">
+                                        <textarea class="form-control" id="journal-entry" rows="5" placeholder="Enter your quiet time reflections..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save Entry</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3>Sermon Notes</h3>
+                                <form id="sermon-notes-form">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" id="sermon-title" placeholder="Sermon Title">
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="date" class="form-control" id="sermon-date">
+                                    </div>
+                                    <div class="mb-3">
+                                        <textarea class="form-control" id="sermon-notes" rows="5" placeholder="Enter sermon notes..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save Notes</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="config.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
